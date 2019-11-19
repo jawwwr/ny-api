@@ -1,0 +1,40 @@
+version: '3.1'
+services:
+  ny-db:
+    image: postgres:10-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: ny-db
+    volumes:
+      - ./ny-db:/var/lib/postgresql/data
+    networks:
+      - ny-network
+  admin:
+    image: adminer
+    restart: always
+    depends_on: 
+      - ny-db
+    ports:
+      - "8080:8080"
+    networks:
+      - ny-network
+  api:
+    build: .
+    restart: always
+    depends_on:
+      - ny-db
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://user:pass@ny-db:5432/ny-db
+      PORT: 3000
+      JWT_SECRET: ny-some-secret-key
+    networks:
+      - ny-network
+networks:
+  ny-network:
