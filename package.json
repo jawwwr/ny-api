@@ -6,7 +6,7 @@
   "scripts": {
     "watch-server": "nodemon --watch src -e ts,tsx --exec ts-node src/server.ts",
     "build-ts": "tsc",
-    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "tslint": "tslint --fix -c tslint.json -p tsconfig.json",
     "serve": "node dist/server.js",
     "build": "npm run tslint && npm run build-ts",
     "start": "npm run serve"
@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "@koa/cors": "^3.0.0",
+    "@types/socket.io": "^2.1.4",
     "class-validator": "^0.9.1",
     "cron": "^1.7.2",
     "dotenv": "^8.0.0",
@@ -66,6 +67,7 @@
     "pg": "^7.4.3",
     "pg-connection-string": "^2.0.0",
     "reflect-metadata": "^0.1.12",
+    "socket.io": "^2.3.0",
     "typeorm": "^0.2.18",
     "winston": "^3.2.1"
   }

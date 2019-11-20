@@ -6,6 +6,8 @@ import cors from '@koa/cors';
 import winston from 'winston';
 import { createConnection } from 'typeorm';
 import 'reflect-metadata';
+import socketIO from 'socket.io';
+import Http from 'http';
 import * as PostgressConnectionStringParser from 'pg-connection-string';
 
 import { logger } from './logging';
@@ -13,6 +15,7 @@ import { config } from './config';
 import { unprotectedRouter } from './unprotectedRoutes';
 import { protectedRouter } from './protectedRoutes';
 import { cron } from './cron';
+import InitializeSocket from './services/socketio';
 
 // Get DB connection options from env variable
 const connectionOptions = PostgressConnectionStringParser.parse(config.databaseUrl);
@@ -34,7 +37,13 @@ createConnection({
         ssl: config.dbsslconn, // if not development, will use SSL
     }
 }).then(async connection => {
+
     const app = new Koa();
+    const server = Http.createServer(app.callback());
+    const io = socketIO(server);
+
+    // socket initialize
+    InitializeSocket(io);
 
     // Provides important security headers to make your app more secure
     app.use(helmet());
@@ -61,7 +70,7 @@ createConnection({
     // Register cron job to do any action needed
     cron.start();
 
-    app.listen(config.port);
+    server.listen(config.port);
 
     console.log(`Server running on port ${config.port}`);
 
