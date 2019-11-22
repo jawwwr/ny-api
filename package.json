@@ -55,6 +55,7 @@
   "dependencies": {
     "@koa/cors": "^3.0.0",
     "@types/socket.io": "^2.1.4",
+    "axios": "^0.19.0",
     "class-validator": "^0.9.1",
     "cron": "^1.7.2",
     "dotenv": "^8.0.0",
@@ -68,6 +69,8 @@
     "pg-connection-string": "^2.0.0",
     "reflect-metadata": "^0.1.12",
     "socket.io": "^2.3.0",
+    "splitwise": "^1.0.0",
+    "splitwise-node": "^0.3.3",
     "typeorm": "^0.2.18",
     "winston": "^3.2.1"
   }
