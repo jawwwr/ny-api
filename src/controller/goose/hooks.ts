@@ -51,6 +51,6 @@ export async function getRestaurants() {
         )
         return request.data
     } catch (e) {
-        return null
+        return undefined
     }
 }

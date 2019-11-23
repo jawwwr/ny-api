@@ -1,14 +1,15 @@
 version: '3.1'
 services:
-  ny-db:
-    image: postgres:10-alpine
-    networks:
-      - ny-network
   api:
     build: .
     restart: always
-    depends_on:
-      - ny-db
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      JWT_SECRET: ny-some-secret-key
     networks:
       - ny-network
 networks:
