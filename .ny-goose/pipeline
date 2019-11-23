@@ -15,12 +15,12 @@ node {
             }
         }
     }
-    stage ('Loading Ship') {
+    stage ('Building') {
         script {
             try {
                 sh (
                     script: """
-                        sh .ny-goose/loading.sh
+                        sh .ny-goose/building.sh
                     """,
                     returnStdout: true
                 )
@@ -84,34 +84,6 @@ node {
         sh """
             echo $CONTAINER_NAME > .ny-goose/ny-container-name.txt
         """
-    }
-    stage('Building') {
-        script {
-            try {
-                sh (
-                    script: """
-                        sh .ny-goose/building.sh
-                    """,
-                    returnStdout: true
-                )
-            } catch (e) {
-                throw e
-            }
-        }
-    }
-    stage('Shipping') {
-        script {
-            try {
-                sh (
-                    script: """
-                        sh .ny-goose/shipping.sh
-                    """,
-                    returnStdout: true
-                )
-            } catch (e) {
-                throw e
-            }
-        }
     }
     stage('Shipped') {
         script {

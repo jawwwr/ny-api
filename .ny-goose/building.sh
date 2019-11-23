@@ -24,6 +24,3 @@ curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK -d '{
 		}
 	]
 }'
-
-docker build \
--t ny-web -f Dockerfile .
