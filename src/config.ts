@@ -18,7 +18,7 @@ export interface IConfig {
 const isDevMode = process.env.NODE_ENV == 'development';
 
 const config: IConfig = {
-    port: +process.env.PORT || 3306,
+    port: +process.env.PORT || 3000,
     host_db: process.env.NY_HOST_DB || 'db-ny-beta.cuyamerxrzkv.ap-southeast-1.rds.amazonaws.com',
     username: process.env.USERNAME || 'admin',
     password: process.env.PASSWORD || 'noygrittes',
