@@ -2,9 +2,9 @@ import { BaseContext } from 'koa';
 import { getManager, getRepository, Repository, Not, Equal, Like, AdvancedConsoleLogger } from 'typeorm';
 import { validate, ValidationError } from 'class-validator';
 import { request, summary, path, body, responsesAll, tagsAll } from 'koa-swagger-decorator';
-import { User } from '../../entity/user/User';
-import { CheckIn } from '../../entity/check_in/CheckIn';
-import { PointBreakdown } from '../../entity/point_breakdown/PointBreakdown';
+import { User } from '../../entity/user';
+import { CheckIn } from '../../entity/check_in';
+import { PointBreakdown } from '../../entity/point_breakdown';
 import { restaurant_rank } from '../index';
 
 

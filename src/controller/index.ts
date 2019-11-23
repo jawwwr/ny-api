@@ -4,3 +4,4 @@ export { default as restaurant } from './restaurant';
 export { default as goose } from './goose';
 export { default as checkIn } from './checkIn';
 export { default as restaurant_rank } from './restaurant_rank';
+export { default as review } from './review';

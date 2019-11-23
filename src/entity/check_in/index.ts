@@ -1,14 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, Unique, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, Double } from 'typeorm';
 import { Length } from 'class-validator';
-import { User } from '../user/User';
+import { User } from '../user';
 
 @Entity()
-export class RestaurantRank {
-    @Unique(['restaurantId', 'userId'])
+export class CheckIn {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(type => User, user => user.restaurantRanks)
+    @ManyToOne(type => User, user => user.checkIns)
     user: User;
 
     @Column()
@@ -17,11 +16,14 @@ export class RestaurantRank {
     @Column()
     points: number;
 
-    @Column()
-    current_rank: number;
+    @Column({type: 'timestamp'})
+    time: Date;
 
     @Column()
-    isActive: boolean;
+    latitude: string;
+
+    @Column()
+    longitude: string;
 
     @CreateDateColumn({type: 'timestamp'})
     createdAt: Date;
