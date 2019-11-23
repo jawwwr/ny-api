@@ -16,6 +16,6 @@ services:
       - "5000:3000"
     environment:
       NODE_ENV: production
-      DATABASE_URL: postgres://user:pass@ny-db:5432/ny-db-intr
+      DATABASE_URL: postgres://user:pass@ny-db-intr:5432/ny-db-intr
       PORT: 3000
       JWT_SECRET: ny-some-secret-key
