@@ -29,7 +29,7 @@ export default class ReviewController {
             .createQueryBuilder('reviews')
             .limit( ctx.query.limit || 10)
             .orderBy('review.createdAt', 'DESC')
-            .leftJoinAndSelect('review.user', 'user') //show user name per review
+            .leftJoinAndSelect('review.user', 'user') // show user name per review
             .where('review.restaurantId = :id', { id: +ctx.params.restaurant_id }).getMany();
 
         if (reviews) {
