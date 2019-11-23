@@ -5,7 +5,7 @@ import { request, summary, path, body, responsesAll, tagsAll } from 'koa-swagger
 import { RestaurantRank } from '../../entity/restaurant_rank';
 
 @responsesAll({ 200: { description: 'success'}, 400: { description: 'bad request'}, 401: { description: 'unauthorized, missing/wrong jwt token'}})
-@tagsAll(['User'])
+@tagsAll(['RestaurantRank'])
 export default class RestaurantRankController {
 
     @request('get', '/ranks')
@@ -22,10 +22,7 @@ export default class RestaurantRankController {
     }
 
     @request('get', '/ranks/{restaurant_id}')
-    @summary('Find all all with rank based on restaurant')
-    @path({
-        restaurant_id: { type: 'number', required: true, description: 'id of restaurant' }
-    })
+    @summary('Find all rank based on restaurant')
     public static async getRanksByResto(ctx: BaseContext) {
 
         const ranks = await getRepository(RestaurantRank)
@@ -39,6 +36,28 @@ export default class RestaurantRankController {
             // return OK status code and loaded user object
             ctx.status = 200;
             ctx.body = ranks;
+        } else {
+            // return a BAD REQUEST status code and error message
+            ctx.status = 400;
+            ctx.body = 'No ranks for this restaurant.';
+        }
+
+    }
+
+    @request('get', '/user-rank/{restaurant_id}')
+    @summary('Find user rank based on restaurant')
+    public static async getUserRankByResto(ctx: BaseContext) {
+        const userRank = await getManager().getRepository(RestaurantRank)
+            .createQueryBuilder('ranks')
+            .leftJoinAndSelect('ranks.user', 'user')
+            .where('ranks.restaurantId = :id', { id: +ctx.params.restaurant_id })
+            .andWhere('ranks.userId = :user_id', { user_id: ctx.query.user_id })
+            .getOne();
+
+        if (userRank) {
+            // return OK status code and loaded user object
+            ctx.status = 200;
+            ctx.body = userRank;
         } else {
             // return a BAD REQUEST status code and error message
             ctx.status = 400;

@@ -14,6 +14,7 @@ unprotectedRouter.get('/check-ins', controller.checkIn.getAllUserCheckIn);
 unprotectedRouter.get('/check-in/:user_id', controller.checkIn.getUserCheckIn);
 unprotectedRouter.post('/check-in', controller.checkIn.createCheckIn);
 unprotectedRouter.get('/ranks', controller.restaurant_rank.getAllRanks);
+unprotectedRouter.get('/user-rank/:restaurant_id', controller.restaurant_rank.getUserRankByResto);
 unprotectedRouter.get('/ranks/:restaurant_id', controller.restaurant_rank.getRanksByResto);
 unprotectedRouter.post('/new-rank', controller.restaurant_rank.createRank);
 unprotectedRouter.get('/reviews', controller.review.getAllReview);
