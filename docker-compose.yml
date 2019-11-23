@@ -8,9 +8,9 @@ services:
       - "9229:9229"
     environment:
       NODE_ENV: production
+      DATABASE_URL: postgres://user:pass@ny-db:5432/ny-db
       PORT: 3000
       JWT_SECRET: ny-some-secret-key
     networks:
       - ny-network
 networks:
-  ny-network:
