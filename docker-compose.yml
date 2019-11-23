@@ -4,13 +4,6 @@ services:
     image: postgres:10-alpine
     networks:
       - ny-network
-  admin:
-    image: adminer
-    restart: always
-    depends_on: 
-      - ny-db
-    networks:
-      - ny-network
   api:
     build: .
     restart: always

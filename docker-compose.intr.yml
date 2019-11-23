@@ -1,6 +1,6 @@
 version: '3.1'
 services:
-  ny-db:
+  ny-db-intr:
     ports:
       - "5432:5432"
     environment:
@@ -9,12 +9,9 @@ services:
       POSTGRES_DB: ny-db-intr
     volumes:
       - ./ny-db-intr:/var/lib/postgresql/data
-  admin:
-    ports:
-      - "9090:8080"
-  api:
+  api-intr:
     depends_on:
-      - ny-db
+      - ny-db-intr
     ports:
       - "4000:4000"
     environment:

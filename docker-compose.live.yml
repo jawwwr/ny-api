@@ -9,9 +9,6 @@ services:
       POSTGRES_DB: ny-db
     volumes:
       - ./ny-db:/var/lib/postgresql/data
-  admin:
-    ports:
-      - "8080:8080"
   api:
     depends_on:
       - ny-db

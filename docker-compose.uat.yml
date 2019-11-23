@@ -1,6 +1,6 @@
 version: '3.1'
 services:
-  ny-db:
+  ny-db-uat:
     ports:
       - "5432:5432"
     environment:
@@ -9,12 +9,9 @@ services:
       POSTGRES_DB: ny-db-uat
     volumes:
       - ./ny-db-uat:/var/lib/postgresql/data
-  admin:
-    ports:
-      - "7070:8080"
-  api:
+  api-uat:
     depends_on:
-      - ny-db
+      - ny-db-uat
     ports:
       - "3000:3000"
     environment:
