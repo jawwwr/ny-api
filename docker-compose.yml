@@ -2,6 +2,16 @@ version: '3.1'
 services:
   ny-api-live:
     build: .
+    environment:
+      GEO_IP_API_KEY: ${GEO_IP_API_KEY}
+      NY_DB: ${NY_DB}
+      NY_HOST_DB: ${NY_HOST_DB}
+      NY_PASS_DB: ${NY_PASS_DB}
+      NY_USER_DB: ${NY_USER_DB}
+      SPLITWISE_KEY: ${SPLITWISE_KEY}
+      SPLITWISE_SECRET: ${SPLITWISE_SECRET}
+      ZOMATO_KEY: ${ZOMATO_KEY}
+      ZOMATO_URL: ${ZOMATO_URL}
     restart: always
     ports:
       - "3000:3000"

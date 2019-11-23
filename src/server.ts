@@ -18,14 +18,15 @@ import { protectedRouter } from './protectedRoutes';
 import { cron } from './cron';
 import InitializeSocket from './services/socketio';
 
+console.log(process.env)
 
 createConnection({
     type: 'mysql',
-    host: 'db-ny-beta.cuyamerxrzkv.ap-southeast-1.rds.amazonaws.com', // config.host_db,
+    host: process.env.NY_HOST_DB, // config.host_db,
     port: 3306, // config.port,
-    username: 'admin', // config.username,
-    password: 'noygrittes', // config.password,
-    database: 'ny_db_beta', // config.database,
+    username: process.env.NY_USER_DB, // config.username,
+    password: process.env.NY_PASS_DB, // config.password,
+    database: process.env.NY_DB, // config.database,
     synchronize: true,
     logging: false,
     entities: config.dbEntitiesPath,

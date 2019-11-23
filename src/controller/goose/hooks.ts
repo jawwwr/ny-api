@@ -2,8 +2,6 @@ import Axios from 'axios';
 import SplitwiseAuthApi from 'splitwise-node';
 import Splitwise from 'splitwise';
 
-const zomate_token = process.env.ZOMATO_KEY;
-const zomate_url = process.env.ZOMATO_URL;
 const sw_key = process.env.SPLITWISE_KEY;
 const sw_secret = process.env.SPLITWISE_SECRET;
 
