@@ -8,8 +8,6 @@ services:
       POSTGRES_PASSWORD: pass
       POSTGRES_DB: ny-db
   api:
-    depends_on:
-      - ny-db
     ports:
       - "3000:3000"
     environment:
