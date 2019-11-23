@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
-export class PointBreakdown { 
+export class PointBreakdown {
 
     @PrimaryGeneratedColumn()
     id: number;

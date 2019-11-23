@@ -2,15 +2,15 @@ import { BaseContext } from 'koa';
 import { getManager, getRepository, Repository, Not, Equal, Like, AdvancedConsoleLogger } from 'typeorm';
 import { validate, ValidationError } from 'class-validator';
 import { request, summary, path, body, responsesAll, tagsAll } from 'koa-swagger-decorator';
-import { User } from '../../entity/User';
-import { CheckIn } from '../../entity/CheckIn';
-import { RestaurantRank } from '../../entity/RestaurantRank';
+import { User } from '../../entity/user/User';
+import { CheckIn } from '../../entity/check_in/CheckIn';
+import { RestaurantRank } from '../../entity/restaurant_rank/RestaurantRank';
 
 @responsesAll({ 200: { description: 'success'}, 400: { description: 'bad request'}, 401: { description: 'unauthorized, missing/wrong jwt token'}})
 @tagsAll(['User'])
 
 
-export default class restaurantRankController {
+export default class RestaurantRankController {
 
     @request('get', '/ranks')
     @summary('Find all ranks')
@@ -34,13 +34,12 @@ export default class restaurantRankController {
     })
     public static async getRanksByResto(ctx: BaseContext) {
 
-        // load user by id
-
         const ranks = await getRepository(RestaurantRank)
-            .createQueryBuilder("ranks")
-            .leftJoinAndSelect("ranks.user", "user")
-            .where("ranks.restaurantId = :id", { id: +ctx.params.restaurant_id })
-            .getMany();
+            .createQueryBuilder('ranks')
+            .limit( ctx.query.limit || 10)
+            .orderBy('ranks.points', 'DESC')
+            .leftJoinAndSelect('ranks.user', 'user')
+            .where('ranks.restaurantId = :id', { id: +ctx.params.restaurant_id }).getMany();
 
         if (ranks) {
             // return OK status code and loaded user object
@@ -68,27 +67,27 @@ export default class restaurantRankController {
         rankToSave.user = ctx.request.body.user_id;
 
         // validate user entity
-        const existing_rank = await rankRepository.findOne({ user: rankToSave.user, restaurantId: rankToSave.restaurantId })
-    if (existing_rank){
+        const existing_rank = await rankRepository.findOne({ user: rankToSave.user, restaurantId: rankToSave.restaurantId });
+    if (existing_rank) {
             const new_points = existing_rank.points + rankToSave.points;
             const rank = await getRepository(RestaurantRank)
             .createQueryBuilder()
             .update(RestaurantRank)
             .set({ points: new_points })
-            .where("restaurantId = :restaurant_id", { restaurant_id: rankToSave.restaurantId })
-            .andWhere("userId = :user_id", { user_id: rankToSave.user  })
+            .where('restaurantId = :restaurant_id', { restaurant_id: rankToSave.restaurantId })
+            .andWhere('userId = :user_id', { user_id: rankToSave.user  })
             .execute();
-        if (rank){
+        if (rank) {
             ctx.status = 201;
             ctx.body = rank;
         }
-        else{
+        else {
             ctx.status = 400;
             ctx.body = 'Was not able to update rank.';
         }
-            
+
     }
-    else{
+    else {
             // save the user contained in the POST body
             const rank = await rankRepository.save(rankToSave);
             // return CREATED status code and updated user

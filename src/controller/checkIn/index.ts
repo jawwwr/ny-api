@@ -2,10 +2,10 @@ import { BaseContext } from 'koa';
 import { getManager, getRepository, Repository, Not, Equal, Like, AdvancedConsoleLogger } from 'typeorm';
 import { validate, ValidationError } from 'class-validator';
 import { request, summary, path, body, responsesAll, tagsAll } from 'koa-swagger-decorator';
-import { User } from '../../entity/User';
-import { CheckIn } from '../../entity/CheckIn';
-import { PointBreakdown } from '../../entity/PointBreakdown';
-import { restaurant_rank } from '../index'
+import { User } from '../../entity/user/User';
+import { CheckIn } from '../../entity/check_in/CheckIn';
+import { PointBreakdown } from '../../entity/point_breakdown/PointBreakdown';
+import { restaurant_rank } from '../index';
 
 
 @responsesAll({ 200: { description: 'success'}, 400: { description: 'bad request'}, 401: { description: 'unauthorized, missing/wrong jwt token'}})
@@ -37,8 +37,8 @@ export default class CheckInController {
         // load user by id
 
         const checkIns = await getRepository(CheckIn)
-            .createQueryBuilder("checkIns")
-            .where("checkIns.userId = :id", { id: +ctx.params.user_id })
+            .createQueryBuilder('checkIns')
+            .where('checkIns.userId = :id', { id: +ctx.params.user_id })
             .getMany();
 
         if (checkIns) {
@@ -61,21 +61,19 @@ export default class CheckInController {
         // get a user repository to perform operations with user
         const checkInRepository: Repository<CheckIn> = getManager().getRepository(CheckIn);
         const user = await getRepository(User)
-            .createQueryBuilder("user")
-            .where("user.id = :id", { id: +ctx.request.body.user_id })
+            .createQueryBuilder('user')
+            .where('user.id = :id', { id: +ctx.request.body.user_id })
             .getOne();
 
-        const pointbreakdown = await getRepository(PointBreakdown).createQueryBuilder("point")
-            .where("point.id = :id", { id: 1 })
+        const pointbreakdown = await getRepository(PointBreakdown).createQueryBuilder('point')
+            .where('point.id = :id', { id: 1 })
             .getOne();
-
 
         // build up entity user to be saved
         const checkInToSave: CheckIn = new CheckIn();
-        var today = new Date();
-
-        //get corresponding point from PoinBreakdown Table
-        ctx.request.body.points =  pointbreakdown.point
+        const today = new Date();
+        // get corresponding point from PoinBreakdown Table
+        ctx.request.body.points =  pointbreakdown.point;
 
         checkInToSave.restaurantId = ctx.request.body.restaurant_id;
         checkInToSave.points = ctx.request.body.points;
@@ -85,31 +83,35 @@ export default class CheckInController {
         checkInToSave.user = ctx.request.body.user_id;
         // validate user entity
 
-        if (ctx.request.body.latitude > ctx.request.body.restaurant_latitude + 0.0001 || ctx.request.body.latitude < ctx.request.body.restaurant_latitude - 0.0001 ){
-            console.log("im here outer");
-            if (ctx.request.body.longitude > ctx.request.body.restaurant_longitude + 0.0001 || ctx.request.body.longitude < ctx.request.body.restaurant_longitude - 0.0001 ){
-                console.log("im here");
+        if (parseFloat(ctx.request.body.latitude) < (parseFloat(ctx.request.body.restaurant_latitude) + 0.0001) && parseFloat(ctx.request.body.latitude) > (parseFloat(ctx.request.body.restaurant_latitude) - 0.0001) ) {
+            if (parseFloat(ctx.request.body.longitude) < parseFloat(ctx.request.body.restaurant_longitude) + 0.0001 && parseFloat(ctx.request.body.longitude) > parseFloat(ctx.request.body.restaurant_longitude) - 0.0001 ) {
+                const hours = (checkInToSave.time).valueOf() - (user.lastCheckInTime).valueOf();
+                // if last check in time is greater then 2 hours offset
+                if (hours < 2 ) {
+                    // return BAD REQUEST status code and email already exists error
+                    ctx.status = 400;
+                    ctx.body = 'Check in still on cooldown';
+                } else {
+                    // save the user contained in the POST body
+
+                    const checkIn = await checkInRepository.save(checkInToSave);
+                    await restaurant_rank.createRank(ctx);
+                    // return CREATED status code and updated user
+                    ctx.status = 201;
+                    ctx.body = checkIn;
+                }
+            } else {
                 ctx.status = 400;
                 ctx.body = 'You are not within check-in distance!';
             }
-        }
 
-
-        const hours = (checkInToSave.time).valueOf() - (user.lastCheckInTime).valueOf();
-        //if last check in time is greater then 2 hours offset
-        if (hours < 2 ){
-            // return BAD REQUEST status code and email already exists error
-            ctx.status = 400;
-            ctx.body = 'Check in still on cooldown';
         } else {
-            // save the user contained in the POST body
-
-            const checkIn = await checkInRepository.save(checkInToSave);
-            await restaurant_rank.createRank(ctx);
-            // return CREATED status code and updated user
-            ctx.status = 201;
-            ctx.body = checkIn;
+            ctx.status = 400;
+            ctx.body = 'You are not within check-in distance!';
         }
+
+
+
     }
 
 }

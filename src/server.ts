@@ -20,15 +20,16 @@ import InitializeSocket from './services/socketio';
 
 
 createConnection({
-    type: "mysql",
-    host: config.host_db, 
-    port: config.port,
-    username: config.username, 
-    password: config.password,
-    database: config.database,
+    type: 'mysql',
+    host: 'db-ny-beta.cuyamerxrzkv.ap-southeast-1.rds.amazonaws.com', // config.host_db,
+    port: 3306, // config.port,
+    username: 'admin', // config.username,
+    password: 'noygrittes', // config.password,
+    database: 'ny_db_beta', // config.database,
     synchronize: true,
     logging: false,
     entities: config.dbEntitiesPath,
+    acquireTimeout: 1000,
     extra: {
         ssl: config.dbsslconn, // if not development, will use SSL
     }

@@ -1,10 +1,10 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, Unique, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Length } from 'class-validator';
-import {User} from "./User";
+import { User } from '../user/User';
 
 @Entity()
 export class RestaurantRank {
-    @Unique(["restaurantId", "userId"])
+    @Unique(['restaurantId', 'userId'])
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -23,10 +23,10 @@ export class RestaurantRank {
     @Column()
     isActive: boolean;
 
-    @CreateDateColumn({type: "timestamp"})
+    @CreateDateColumn({type: 'timestamp'})
     createdAt: Date;
 
-    @UpdateDateColumn({type: "timestamp"})
+    @UpdateDateColumn({type: 'timestamp'})
     updatedAt: Date;
 
 

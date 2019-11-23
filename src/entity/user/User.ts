@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Length, IsEmail } from 'class-validator';
-import {RestaurantRank} from "./RestaurantRank";
-import {CheckIn} from "./CheckIn";
+import { RestaurantRank } from '../restaurant_rank/RestaurantRank';
+import { CheckIn } from '../check_in/CheckIn';
 
 @Entity()
 export class User {
@@ -24,7 +24,7 @@ export class User {
     @Column()
     profilePicture: string;
 
-    @Column("datetime")
+    @Column('datetime')
     lastCheckInTime: number;
 
     @OneToMany(type => RestaurantRank, restaurantRank => restaurantRank.user)
