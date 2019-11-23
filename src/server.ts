@@ -9,6 +9,7 @@ import 'reflect-metadata';
 import socketIO from 'socket.io';
 import Http from 'http';
 import * as PostgressConnectionStringParser from 'pg-connection-string';
+import mysql from 'mysql';
 
 import { logger } from './logging';
 import { config } from './config';
@@ -20,16 +21,30 @@ import InitializeSocket from './services/socketio';
 // Get DB connection options from env variable
 const connectionOptions = PostgressConnectionStringParser.parse(config.databaseUrl);
 
+
 // create connection with database
 // note that its not active database connection
 // TypeORM creates you connection pull to uses connections from pull on your requests
+// createConnection({
+//     type: 'postgres',
+//     host: connectionOptions.host,
+//     port: connectionOptions.port,
+//     username: connectionOptions.user,
+//     password: connectionOptions.password,
+//     database: connectionOptions.database,
+//     synchronize: true,
+//     logging: false,
+//     entities: config.dbEntitiesPath,
+//     extra: {
+//         ssl: config.dbsslconn, // if not development, will use SSL
+//     }
 createConnection({
-    type: 'postgres',
-    host: connectionOptions.host,
-    port: connectionOptions.port,
-    username: connectionOptions.user,
-    password: connectionOptions.password,
-    database: connectionOptions.database,
+    type: "mysql",
+    host: 'db-ny-beta.cuyamerxrzkv.ap-southeast-1.rds.amazonaws.com',//connectionOptions.host,
+    port: 3306,//connectionOptions.port,
+    username: 'admin',//connectionOptions.user,
+    password: 'noygrittes',//connectionOptions.password,
+    database: 'ny_db_beta',//connectionOptions.database,
     synchronize: true,
     logging: false,
     entities: config.dbEntitiesPath,

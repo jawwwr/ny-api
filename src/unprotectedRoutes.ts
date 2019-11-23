@@ -9,5 +9,12 @@ unprotectedRouter.get('/restaurants', controller.restaurant.getAll);
 unprotectedRouter.get('/restaurants/:id', controller.restaurant.get);
 unprotectedRouter.get('/cuisines', controller.restaurant.getCuisines);
 unprotectedRouter.get('/goose', controller.goose.create);
+unprotectedRouter.get('/check-ins', controller.checkIn.getAllUserCheckIn);
+unprotectedRouter.get('/check-in/:user_id', controller.checkIn.getUserCheckIn);
+unprotectedRouter.post('/check-in', controller.checkIn.createCheckIn);
+unprotectedRouter.get('/ranks', controller.restaurant_rank.getAllRanks);
+unprotectedRouter.get('/ranks/:restaurant_id', controller.restaurant_rank.getRanksByResto);
+unprotectedRouter.post('/new-rank', controller.restaurant_rank.createRank);
+
 
 export { unprotectedRouter };

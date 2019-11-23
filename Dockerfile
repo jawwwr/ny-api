@@ -14,4 +14,4 @@ COPY --chown=node:node . .
 
 EXPOSE 3000
 
-CMD [ "npm", "run", "watch-server" ]
+CMD [ "npm", "run", "start" ]
