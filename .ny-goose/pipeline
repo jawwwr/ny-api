@@ -44,15 +44,6 @@ node {
         script {
             if (JOB_BASE_NAME == 'master') {
                 ENV_NAME = 'master'
-            } else if(JOB_BASE_NAME == 'uat') {
-                ENV_NAME = 'uat'
-            } else {
-                ENV_NAME = 'intr'
-            }
-        }
-
-        sh """
-            if [ $ENV_NAME = master ] ; then
                 try {
                     sh (
                         script: """
@@ -63,7 +54,8 @@ node {
                 } catch (e) {
                     throw e
                 }
-            elif [ $ENV_NAME = uat ] ; then
+            } else if(JOB_BASE_NAME == 'uat') {
+                ENV_NAME = 'uat'
                  try {
                     sh (
                         script: """
@@ -74,7 +66,8 @@ node {
                 } catch (e) {
                     throw e
                 }
-            else 
+            } else {
+                ENV_NAME = 'intr'
                  try {
                     sh (
                         script: """
@@ -85,7 +78,13 @@ node {
                 } catch (e) {
                     throw e
                 }
+            }
+        }
 
+        sh """
+            if [ $ENV_NAME = master ] ; then
+            elif [ $ENV_NAME = uat ] ; then
+            else 
             fi
 
             echo $CONTAINER_NAME > .ny-goose/ny-container-name.txt
