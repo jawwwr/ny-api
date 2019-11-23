@@ -82,11 +82,6 @@ node {
         }
 
         sh """
-            if [ $ENV_NAME = master ] ; then
-            elif [ $ENV_NAME = uat ] ; then
-            else 
-            fi
-
             echo $CONTAINER_NAME > .ny-goose/ny-container-name.txt
         """
     }
