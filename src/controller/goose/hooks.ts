@@ -14,7 +14,10 @@ async function splitWiseAuthUser() {
     const { token, secret } = await authApi.getOAuthRequestToken()
     userOAuthToken = token
     userOAuthTokenSecret = secret
-    return authApi.getUserAuthorisationUrl(token);
+    return {
+        value: authApi.getUserAuthorisationUrl(token),
+        status: 'unauthorized'
+    };
 }
 
 export async function splitWiseToken() {
@@ -28,29 +31,11 @@ export async function splitWiseToken() {
             accessToken: userOAuthToken
         })
         const token = await sw.getAccessToken()
-        return token;
+        return {
+            value: token,
+            status: 'authorized'
+        };
     }catch(e) {
         return e
-    }
-}
-
-
-export async function getRestaurants() {
-    try {
-        const config = {
-            headers: {
-                // tslint:disable-next-line:object-literal-key-quotes
-                'user-key': zomate_token,
-                'content-type': 'application/json',
-            },
-        }
-
-        const request = await Axios.get(
-            `${zomate_url}/search?lat=10.334300&lon=123.892790&sort=rating&radius=10000`,
-            config,
-        )
-        return request.data
-    } catch (e) {
-        return null
     }
 }
