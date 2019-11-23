@@ -6,6 +6,7 @@ const unprotectedRouter = new Router();
 // Hello World route
 unprotectedRouter.get('/', controller.general.helloWorld);
 unprotectedRouter.get('/restaurants', controller.restaurant.getAll);
+unprotectedRouter.get('/roll-restaurant', controller.restaurant.rollRestaurant);
 unprotectedRouter.get('/restaurants/:id', controller.restaurant.get);
 unprotectedRouter.get('/cuisines', controller.restaurant.getCuisines);
 unprotectedRouter.get('/goose', controller.goose.create);
