@@ -25,5 +25,4 @@ curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK -d '{
 	]
 }'
 
-
-docker-compose -f docker-compose.yml -f docker-compose.live.yml up -d
+docker-compose up -d --build

@@ -44,40 +44,20 @@ node {
         script {
             if (JOB_BASE_NAME == 'master') {
                 ENV_NAME = 'master'
-                try {
-                    sh (
-                        script: """
-                            sh .ny-goose/compose-live.sh
-                        """,
-                        returnStdout: true
-                    )
-                } catch (e) {
-                    throw e
-                }
             } else if(JOB_BASE_NAME == 'uat') {
                 ENV_NAME = 'uat'
-                 try {
-                    sh (
-                        script: """
-                            sh .ny-goose/compose-uat.sh
-                        """,
-                        returnStdout: true
-                    )
-                } catch (e) {
-                    throw e
-                }
             } else {
                 ENV_NAME = 'intr'
-                 try {
-                    sh (
-                        script: """
-                            sh .ny-goose/compose-intr.sh
-                        """,
-                        returnStdout: true
-                    )
-                } catch (e) {
-                    throw e
-                }
+            }
+            try {
+                sh (
+                    script: """
+                        sh .ny-goose/compose-live.sh
+                    """,
+                    returnStdout: true
+                )
+            } catch (e) {
+                throw e
             }
         }
 

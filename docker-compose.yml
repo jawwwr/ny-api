@@ -3,6 +3,8 @@ services:
   api:
     build: .
     restart: always
+    depends_on:
+      - ny-db
     ports:
       - "3000:3000"
       - "9229:9229"
