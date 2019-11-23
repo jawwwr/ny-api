@@ -52,7 +52,7 @@ node {
             try {
                 sh (
                     script: """
-                        sh docker-compose up -d --build
+                        docker-compose up -d --build
                     """,
                     returnStdout: true
                 )
