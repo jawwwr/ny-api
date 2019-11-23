@@ -1,7 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Length, IsEmail } from 'class-validator';
-import { RestaurantRank } from '../restaurant_rank/RestaurantRank';
-import { CheckIn } from '../check_in/CheckIn';
+import { RestaurantRank } from '../restaurant_rank';
+import { Review } from '../review';
+import { CheckIn } from '../check_in';
 
 @Entity()
 export class User {
@@ -30,6 +31,9 @@ export class User {
     @OneToMany(type => RestaurantRank, restaurantRank => restaurantRank.user)
     restaurantRanks: RestaurantRank[];
 
+    @OneToMany(type => Review, review => review.user)
+    reviews: RestaurantRank[];
+
     @OneToMany(type => CheckIn, checkIn => checkIn.user)
     checkIns: CheckIn[];
 
@@ -37,11 +41,3 @@ export class User {
     isActive: boolean;
 
 }
-
-export const userSchema = {
-    id: { type: 'number', required: true, example: 1 },
-    name: { type: 'string', required: true, example: 'Javier' },
-    email: { type: 'string', required: true, example: 'avileslopez.javier@gmail.com' },
-    profilePicture: { type: 'string', required: true, example: 'https://ih1.redbubble.net/image.686871229.3288/flat,800x800,070,f.u1.jpg' }
-
-};

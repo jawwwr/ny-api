@@ -2,7 +2,7 @@ import { BaseContext } from 'koa';
 import { getManager, Repository, Not, Equal, Like } from 'typeorm';
 import { validate, ValidationError } from 'class-validator';
 import { request, summary, path, body, responsesAll, tagsAll } from 'koa-swagger-decorator';
-import { User, userSchema } from '../../entity/user/User';
+import { User } from '../../entity/user';
 
 @responsesAll({ 200: { description: 'success'}, 400: { description: 'bad request'}, 401: { description: 'unauthorized, missing/wrong jwt token'}})
 @tagsAll(['User'])
@@ -50,7 +50,6 @@ export default class UserController {
 
     @request('post', '/users')
     @summary('Create a user')
-    @body(userSchema)
     public static async createUser(ctx: BaseContext) {
 
         // get a user repository to perform operations with user
@@ -86,7 +85,6 @@ export default class UserController {
     @path({
         id: { type: 'number', required: true, description: 'id of user' }
     })
-    @body(userSchema)
     public static async updateUser(ctx: BaseContext) {
 
         // get a user repository to perform operations with user

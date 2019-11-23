@@ -2,27 +2,21 @@ import { BaseContext } from 'koa';
 import { getManager, getRepository, Repository, Not, Equal, Like, AdvancedConsoleLogger } from 'typeorm';
 import { validate, ValidationError } from 'class-validator';
 import { request, summary, path, body, responsesAll, tagsAll } from 'koa-swagger-decorator';
-import { User } from '../../entity/user/User';
-import { CheckIn } from '../../entity/check_in/CheckIn';
-import { RestaurantRank } from '../../entity/restaurant_rank/RestaurantRank';
+import { RestaurantRank } from '../../entity/restaurant_rank';
 
 @responsesAll({ 200: { description: 'success'}, 400: { description: 'bad request'}, 401: { description: 'unauthorized, missing/wrong jwt token'}})
 @tagsAll(['User'])
-
-
 export default class RestaurantRankController {
 
     @request('get', '/ranks')
     @summary('Find all ranks')
     public static async getAllRanks(ctx: BaseContext) {
 
-        // get a user repository to perform operations with checkIn
         const rankRepository: Repository<RestaurantRank> = getManager().getRepository(RestaurantRank);
 
         // load all checkIns
         const ranks: RestaurantRank[] = await rankRepository.find();
 
-        // return OK status code and loaded users array
         ctx.status = 200;
         ctx.body = ranks;
     }
@@ -55,18 +49,12 @@ export default class RestaurantRankController {
 
     @request('post', '/new-rank')
     @summary('Create a unique restaurant rank per user')
-    // @body(userSchema)
     public static async createRank(ctx: BaseContext) {
-        // .leftJoinAndSelect("user.photos", "photo")
-        // get a user repository to perform operations with user
-
         const rankRepository: Repository<RestaurantRank> = getManager().getRepository(RestaurantRank);
         const rankToSave: RestaurantRank = new RestaurantRank();
         rankToSave.restaurantId = ctx.request.body.restaurant_id;
         rankToSave.points = ctx.request.body.points;
         rankToSave.user = ctx.request.body.user_id;
-
-        // validate user entity
         const existing_rank = await rankRepository.findOne({ user: rankToSave.user, restaurantId: rankToSave.restaurantId });
     if (existing_rank) {
             const new_points = existing_rank.points + rankToSave.points;
