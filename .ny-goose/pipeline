@@ -1,31 +1,135 @@
-pipeline {
-    agent any
-    stages {
-        stage('Initialize') {
-            steps {
-                echo 'Started...'
-                echo "${JOB_NAME} - ${BUILD_NUMBER} - ${BUILD_ID} on ${JENKINS_URL}"
+node {
+    def ENV_NAME = 'intr'
+    stage('Initializing') {
+        checkout scm
+        script {
+            try {
+                sh (
+                    script: """
+                        sh .ny-goose/init.sh
+                    """,
+                    returnStdout: true
+                )
+            } catch (e) {
+                throw e
             }
         }
-        stage('Checkout') {
-            steps {
-                echo 'Checking out...'
-                checkout scm
+    }
+    stage ('Loading Ship') {
+        script {
+            try {
+                sh (
+                    script: """
+                        sh .ny-goose/loading.sh
+                    """,
+                    returnStdout: true
+                )
+            } catch (e) {
+                throw e
             }
         }
-        stage('Build') {
-            steps {
-                echo 'Building..'
+        CONTAINER_NAME = sh (
+            script: """
+                if [ $JOB_BASE_NAME = master ]; then 
+                    echo 'master';
+                elif [ $JOB_BASE_NAME = uat ] ; then
+                    echo 'uat';
+                else
+                    echo 'intr';
+                fi
+            """,
+            returnStdout: true
+        ).trim()
+
+        script {
+            if (JOB_BASE_NAME == 'master') {
+                ENV_NAME = 'master'
+            } else if(JOB_BASE_NAME == 'uat') {
+                ENV_NAME = 'uat'
+            } else {
+                ENV_NAME = 'intr'
             }
         }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
+
+        sh """
+            if [ $ENV_NAME = master ] ; then
+                try {
+                    sh (
+                        script: """
+                            sh .ny-goose/compose-live.sh
+                        """,
+                        returnStdout: true
+                    )
+                } catch (e) {
+                    throw e
+                }
+            elif [ $ENV_NAME = uat ] ; then
+                 try {
+                    sh (
+                        script: """
+                            sh .ny-goose/compose-uat.sh
+                        """,
+                        returnStdout: true
+                    )
+                } catch (e) {
+                    throw e
+                }
+            else 
+                 try {
+                    sh (
+                        script: """
+                            sh .ny-goose/compose-intr.sh
+                        """,
+                        returnStdout: true
+                    )
+                } catch (e) {
+                    throw e
+                }
+
+            fi
+
+            echo $CONTAINER_NAME > .ny-goose/ny-container-name.txt
+        """
+    }
+    stage('Building') {
+        script {
+            try {
+                sh (
+                    script: """
+                        sh .ny-goose/building.sh
+                    """,
+                    returnStdout: true
+                )
+            } catch (e) {
+                throw e
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
+    }
+    stage('Shipping') {
+        script {
+            try {
+                sh (
+                    script: """
+                        sh .ny-goose/shipping.sh
+                    """,
+                    returnStdout: true
+                )
+            } catch (e) {
+                throw e
+            }
+        }
+    }
+    stage('Shipped') {
+        script {
+            try {
+                sh (
+                    script: """
+                        sh .ny-goose/shipped.sh
+                    """,
+                    returnStdout: true
+                )
+            } catch (e) {
+                throw e
             }
         }
     }
