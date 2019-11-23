@@ -52,7 +52,7 @@ node {
             try {
                 sh (
                     script: """
-                        sh .ny-goose/compose-live.sh
+                        sh docker-compose up -d --build
                     """,
                     returnStdout: true
                 )
