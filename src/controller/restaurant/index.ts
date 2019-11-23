@@ -9,6 +9,7 @@ export default class RestaurantController {
     @description('Restaurants description here.')
     public static async getAll(ctx: BaseContext) {
         const result = await getRestaurants(ctx.query);
+        console.log(result);
         let filtered_result = result;
 
         if (ctx.query.budget) {

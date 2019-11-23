@@ -18,8 +18,6 @@ import { protectedRouter } from './protectedRoutes';
 import { cron } from './cron';
 import InitializeSocket from './services/socketio';
 
-console.log(process.env)
-
 createConnection({
     type: 'mysql',
     host: process.env.NY_HOST_DB, // config.host_db,
