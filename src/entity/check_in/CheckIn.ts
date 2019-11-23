@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, Double } from 'typeorm';
 import { Length } from 'class-validator';
-import {User} from "./User";
+import { User } from '../user/User';
 
 @Entity()
 export class CheckIn {
@@ -16,19 +16,19 @@ export class CheckIn {
     @Column()
     points: number;
 
-    @Column({type: "timestamp"})
+    @Column({type: 'timestamp'})
     time: Date;
 
-    @Column({type: "double"})
-    latitude: Double;
+    @Column()
+    latitude: string;
 
-    @Column({type: "double"})
-    longitude: Double;
+    @Column()
+    longitude: string;
 
-    @CreateDateColumn({type: "timestamp"})
+    @CreateDateColumn({type: 'timestamp'})
     createdAt: Date;
 
-    @UpdateDateColumn({type: "timestamp"})
+    @UpdateDateColumn({type: 'timestamp'})
     updatedAt: Date;
 
 

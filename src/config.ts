@@ -5,9 +5,9 @@ dotenv.config({ path: '.env' });
 export interface IConfig {
     port: number;
     host_db: string;
-    username: string,
-    password: string,
-    database: string,
+    username: string;
+    password: string;
+    database: string;
     debugLogging: boolean;
     dbsslconn: boolean;
     jwtSecret: string;
