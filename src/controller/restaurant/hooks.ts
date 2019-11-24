@@ -17,11 +17,13 @@ export async function getRestaurants(filters: any = {}) {
             lat, long
         }
         const param_filter = Object.entries(zomato_default_filters).map(([key, val]) => `${key}=${val}`).join('&');
+        console.log(param_filter)
+        console.log(`${zomate_url}/search?${param_filter}&count=50`)
         const request = await Axios.get(
             `${zomate_url}/search?${param_filter}&count=50`,
             config,
         );
-        console.log(request)
+
         return request.data;
     } catch (e) {
         return e;

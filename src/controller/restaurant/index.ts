@@ -12,7 +12,7 @@ export default class RestaurantController {
         const result = await getRestaurants(ctx.query);
         const num_people = ctx.query.number_of_person || 2;
 
-        let filtered_result = result;
+        let filtered_result = result.restaurants || [];
         if(result && result.restaurants.length !== 0) {
             if(ctx.query.budget) { 
                 const budget_per_person = parseFloat(ctx.query.budget)/parseFloat(num_people);
