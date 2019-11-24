@@ -1,5 +1,6 @@
 import Router from 'koa-router';
 import controller = require('./controller');
+import { GooseMiddleware } from './middleware/goose'
 
 const unprotectedRouter = new Router();
 
@@ -10,6 +11,7 @@ unprotectedRouter.get('/roll-restaurant', controller.restaurant.rollRestaurant);
 unprotectedRouter.get('/restaurants/:id', controller.restaurant.get);
 unprotectedRouter.get('/cuisines', controller.restaurant.getCuisines);
 unprotectedRouter.get('/goose', controller.goose.create);
+unprotectedRouter.get('/goose/list', GooseMiddleware, controller.goose.getAll);
 unprotectedRouter.get('/check-ins', controller.checkIn.getAllUserCheckIn);
 unprotectedRouter.get('/check-in/:user_id', controller.checkIn.getUserCheckIn);
 unprotectedRouter.post('/check-in', controller.checkIn.createCheckIn);

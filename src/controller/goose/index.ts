@@ -23,4 +23,12 @@ export default class GooseController {
 
         ctx.body = splitwise_token;
     }
+
+    @request('get', '/goose')
+    @summary('checkAuth goose')
+    @description('Goose description here.')
+    public static async checkAuth(ctx: BaseContext) {
+        const splitwise_token = await splitWiseToken();
+        ctx.body = splitwise_token;
+    }
 }
