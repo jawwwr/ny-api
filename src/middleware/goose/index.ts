@@ -4,7 +4,7 @@ export async function GooseMiddleware(ctx :any, next :any) {
   try {
     const sw = await splitWiseToken();
     console.log(sw)
-    if(sw.status === 'unauthorized') {
+    if(sw.status == 'unauthorized') {
       ctx.status = 401
       ctx.body = {
           Success: false,
@@ -13,11 +13,12 @@ export async function GooseMiddleware(ctx :any, next :any) {
           message: 'Unauthorized Splitwise',
       }
       return
-    } else {
-      ctx.state.splitwise = sw
-      await next()
     }
-  }catch(e) {
+
+    ctx.state.splitwise = sw
+    await next()
+
+  } catch(e) {
     ctx.status = 401
     ctx.body = {
         Success: false,
@@ -26,6 +27,5 @@ export async function GooseMiddleware(ctx :any, next :any) {
         message: 'Some problem occured.',
     }
     return
-
   }
 }
