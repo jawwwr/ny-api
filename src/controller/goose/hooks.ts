@@ -44,7 +44,7 @@ export async function getConnectionsHooks(ctx) {
     const sw = Splitwise({
         consumerKey: sw_key,
         consumerSecret: sw_secret,
-        accessToken: userOAuthToken
+        accessToken: splitwise.value
     });
 
     const friends = await sw.getFriends();
