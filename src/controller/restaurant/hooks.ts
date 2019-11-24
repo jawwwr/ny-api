@@ -12,11 +12,8 @@ export async function getRestaurants(filters: any = {}) {
                 'content-type': 'application/json',
             },
         };
-        const { lat, long } = filters
-        const zomato_default_filters = {
-            lat, long
-        }
-        const param_filter = Object.entries(zomato_default_filters).map(([key, val]) => `${key}=${val}`).join('&');
+
+        const param_filter = Object.entries(filters).map(([key, val]) => `${key}=${val}`).join('&');
         console.log(param_filter)
         console.log(`${zomate_url}/search?${param_filter}&count=50`)
         const request = await Axios.get(
