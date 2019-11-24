@@ -28,10 +28,14 @@ export async function splitWiseToken() {
             consumerSecret: sw_secret,
             accessToken: userOAuthToken
         });
-        const token = await sw.getAccessToken();
+        const token = await sw.getCurrentUser()();
+        const user = await sw.getAccessToken();
+        const friends = await sw.getFriends();
         return {
             Splitwise: sw,
             value: token,
+            user,
+            friends,
             status: 'authorized'
         };
     } catch (e) {
@@ -50,13 +54,14 @@ export async function getConnectionsHooks(ctx) {
         
         const profile = async () => {
             try {
-                return await splitwise.Splitwise.getAccessToken()
+                return await await splitwise.Splitwise.getCurrentUser()
             }catch(e){
                 return false
             }
         }
+
         return {
-            profile: profile()
+            profile,
         }
     }catch(e) {
         return e
