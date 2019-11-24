@@ -30,6 +30,7 @@ export async function splitWiseToken() {
         });
         const token = await sw.getAccessToken();
         return {
+            Splitwise: sw,
             value: token,
             status: 'authorized'
         };
