@@ -40,5 +40,23 @@ export async function splitWiseToken() {
 
 export async function getConnectionsHooks(ctx) {
     const { splitwise } = ctx.state
-    return splitwise
+
+    const sw = Splitwise({
+        consumerKey: sw_key,
+        consumerSecret: sw_secret,
+        accessToken: userOAuthToken
+    });
+
+    const friends = await sw.getFriends();
+    const expenses = await sw.getExpenses();
+    const groups = await sw.getGroups()
+    const profile = await sw.getCurrentUser()
+
+    return {
+        expenses,
+        splitwise,
+        friends,
+        groups,
+        profile
+    }
 }
