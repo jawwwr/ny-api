@@ -2,7 +2,7 @@ import Axios, { AxiosResponse } from 'axios';
 
 const zomate_token = process.env.ZOMATO_KEY;
 const zomate_url = process.env.ZOMATO_URL;
-
+console.log(zomate_token)
 export async function getRestaurants(filters: any = {}) {
     try {
         const config = {
