@@ -50,7 +50,7 @@ export async function getConnectionsHooks(ctx) {
         
         const profile = async () => {
             try {
-                return await splitwise.Splitwise.getCurrentUser()
+                return await splitwise.Splitwise.getAccessToken()
             }catch(e){
                 return false
             }
