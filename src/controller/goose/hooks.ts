@@ -33,6 +33,7 @@ export async function splitWiseToken() {
             Splitwise: sw,
             value: token,
             status: 'authorized'
+            status: 'authorized'
         };
     } catch (e) {
         return e;
@@ -51,16 +52,14 @@ export async function getConnectionsHooks(ctx) {
         accessToken: splitwise.value
     });
 
-    const friends = await sw.getFriends();
-    const expenses = await sw.getExpenses();
-    const groups = await sw.getGroups()
-    const profile = await sw.getCurrentUser()
-
+    // const friends = await sw.getFriends();
+    // const expenses = await sw.getExpenses();
+    // const groups = await sw.getGroups()
+    // const profile = await sw.getCurrentUser()
+    const tokenx = await splitwise.Splitwise.getAccessToken();
+    const token = await sw.getAccessToken();
     return {
-        expenses,
-        splitwise,
-        friends,
-        groups,
-        profile
+        token,
+        tokenx
     }
 }
