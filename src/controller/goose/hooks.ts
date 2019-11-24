@@ -51,17 +51,9 @@ export async function getConnectionsHooks(ctx) {
             consumerSecret: sw_secret,
             accessToken: splitwise.value
         });
-        
-        const profile = async () => {
-            try {
-                return await await splitwise.Splitwise.getCurrentUser()
-            }catch(e){
-                return false
-            }
-        }
 
         return {
-            profile,
+            splitwise
         }
     }catch(e) {
         return e
