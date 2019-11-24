@@ -11,6 +11,14 @@ export default class RestaurantController {
         const result = await getRestaurants(ctx.query);
         let filtered_result = result;
 
+        if (ctx.query.budget) {
+            const budget_per_person = parseFloat(ctx.query.budget) / parseFloat(ctx.query.number_of_persons || 1);
+            const ceil_per_person = budget_per_person + 100;
+            filtered_result = result.restaurants.map(resto => {
+                if (resto.restaurant.average_cost_for_two <= (budget_per_person * 2)) return resto;
+            });
+        }
+
         ctx.body = filtered_result;
     }
 

@@ -2,6 +2,7 @@ import Axios, { AxiosResponse } from 'axios';
 
 const zomate_token = process.env.ZOMATO_KEY;
 const zomate_url = process.env.ZOMATO_URL;
+
 export async function getRestaurants(filters: any = {}) {
     try {
         const config = {
@@ -11,16 +12,14 @@ export async function getRestaurants(filters: any = {}) {
                 'content-type': 'application/json',
             },
         };
-        console.log(zomate_token)
         const param_filter = Object.entries(filters).map(([key, val]) => `${key}=${val}`).join('&');
+
         const request = await Axios.get(
             `${zomate_url}/search?${param_filter}&count=50`,
             config,
         );
-        console.log(param_filter);
         return request.data;
     } catch (e) {
-        console.log(e);
         return e;
     }
 }
