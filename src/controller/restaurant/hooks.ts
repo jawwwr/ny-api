@@ -13,13 +13,14 @@ export async function getRestaurants(filters: any = {}) {
             },
         };
         const param_filter = Object.entries(filters).map(([key, val]) => `${key}=${val}`).join('&');
-        console.log(param_filter);
         const request = await Axios.get(
             `${zomate_url}/search?${param_filter}&count=50`,
             config,
         );
+        console.log(param_filter);
         return request.data;
     } catch (e) {
+        console.log(e);
         return e;
     }
 }
