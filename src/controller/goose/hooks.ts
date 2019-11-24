@@ -51,14 +51,16 @@ export async function getConnectionsHooks(ctx) {
         accessToken: splitwise.value
     });
 
-    // const friends = await sw.getFriends();
-    // const expenses = await sw.getExpenses();
-    // const groups = await sw.getGroups()
-    // const profile = await sw.getCurrentUser()
-    const tokenx = await splitwise.Splitwise.getAccessToken();
-    const token = await sw.getAccessToken();
+    const token = await splitwise.Splitwise.getAccessToken();
+    const friends = await splitwise.Splitwise.getFriends();
+    const expenses = await splitwise.Splitwise.getExpenses();
+    const groups = await splitwise.Splitwise.getGroups()
+    const profile = await splitwise.Splitwise.getCurrentUser()
     return {
+        friends,
+        expenses,
+        groups,
+        profile,
         token,
-        tokenx
     }
 }
