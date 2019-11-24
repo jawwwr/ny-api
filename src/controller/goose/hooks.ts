@@ -28,12 +28,11 @@ export async function splitWiseToken() {
             consumerSecret: sw_secret,
             accessToken: userOAuthToken
         });
-        const token = await sw.getCurrentUser()();
         const user = await sw.getAccessToken();
         const friends = await sw.getFriends();
         return {
             Splitwise: sw,
-            value: token,
+            value: user,
             user,
             friends,
             status: 'authorized'
