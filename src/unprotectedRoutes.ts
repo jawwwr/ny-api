@@ -11,7 +11,7 @@ unprotectedRouter.get('/roll-restaurant', controller.restaurant.rollRestaurant);
 unprotectedRouter.get('/restaurants/:id', controller.restaurant.get);
 unprotectedRouter.get('/cuisines', controller.restaurant.getCuisines);
 unprotectedRouter.get('/goose', controller.goose.create);
-unprotectedRouter.get('/goose/list', GooseMiddleware, controller.goose.getAll);
+unprotectedRouter.get('/goose/list', GooseMiddleware, controller.goose.getConnections);
 unprotectedRouter.get('/check-ins', controller.checkIn.getAllUserCheckIn);
 unprotectedRouter.get('/check-in/:user_id', controller.checkIn.getUserCheckIn);
 unprotectedRouter.post('/check-in', controller.checkIn.createCheckIn);

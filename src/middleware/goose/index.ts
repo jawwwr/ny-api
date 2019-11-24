@@ -1,6 +1,29 @@
 import { splitWiseToken } from '../../controller/goose/hooks';
 
 export async function GooseMiddleware(ctx :any, next :any) {
-  const splitwise_token = await splitWiseToken();
-  console.log(splitwise_token)
+  try {
+    const sw = await splitWiseToken();
+    if(sw.status === 'unauthorized') {
+      ctx.status = 401
+      ctx.body = {
+          Success: false,
+          success: false,
+          link: sw.value,
+          message: 'Unauthorized Splitwise',
+      }
+      return
+    } else {
+      ctx.state.splitwise = sw
+      await next()
+    }
+  }catch(e) {
+    ctx.status = 401
+    ctx.body = {
+        Success: false,
+        success: false,
+        message: 'Some problem occured.',
+    }
+    return
+
+  }
 }

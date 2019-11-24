@@ -1,6 +1,6 @@
 import { BaseContext } from 'koa';
 import { description, request, summary, tagsAll } from 'koa-swagger-decorator';
-import { splitWiseToken } from './hooks';
+import { splitWiseToken, getConnectionsHooks } from './hooks';
 
 @tagsAll(['Goose'])
 export default class GooseController {
@@ -10,6 +10,11 @@ export default class GooseController {
     @description('Goose description here.')
     public static async getAll(ctx: BaseContext) {
         ctx.body = 'Goose';
+    }
+
+    public static async getConnections(ctx: BaseContext) {
+        const connections = await getConnectionsHooks(ctx)
+        ctx.body = connections
     }
 
     @request('get', '/goose')

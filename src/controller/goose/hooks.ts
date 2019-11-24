@@ -37,3 +37,8 @@ export async function splitWiseToken() {
         return e;
     }
 }
+
+export async function getConnectionsHooks(ctx) {
+    const { splitwise } = ctx.state
+    return splitwise
+}
