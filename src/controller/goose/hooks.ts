@@ -40,61 +40,25 @@ export async function splitWiseToken() {
 }
 
 export async function getConnectionsHooks(ctx) {
-    const { splitwise } = ctx.state
-    console.log(ctx.state)
-    console.log(userOAuthToken)
-    console.log(splitwise)
-
-    const sw = Splitwise({
-        consumerKey: sw_key,
-        consumerSecret: sw_secret,
-        accessToken: splitwise.value
-    });
-    
-    const token = async () => {
-        try {
-            return await splitwise.Splitwise.getAccessToken();
-        }catch(e){
-            return false
+    try {
+        const { splitwise } = ctx.state
+        const sw = Splitwise({
+            consumerKey: sw_key,
+            consumerSecret: sw_secret,
+            accessToken: splitwise.value
+        });
+        
+        const profile = async () => {
+            try {
+                return await splitwise.Splitwise.getCurrentUser()
+            }catch(e){
+                return false
+            }
         }
-    }
-
-    const friends = async () => {
-        try {
-            return await splitwise.Splitwise.getFriends();
-        }catch(e){
-            return false
+        return {
+            profile: profile()
         }
-    }
-
-    const expenses = async () => {
-        try {
-            return await splitwise.Splitwise.getExpenses();
-        }catch(e){
-            return false
-        }
-    }
-    const groups = async () => {
-        try {
-            return await splitwise.Splitwise.getGroups()
-        }catch(e){
-            return false
-        }
-    }
-    const profile = async () => {
-        try {
-            return await await splitwise.Splitwise.getCurrentUser()
-        }catch(e){
-            return false
-        }
-    }
-
-
-    return {
-        friends,
-        expenses,
-        groups,
-        profile,
-        token,
+    }catch(e) {
+        return e
     }
 }
