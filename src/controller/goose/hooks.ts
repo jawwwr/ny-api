@@ -33,7 +33,6 @@ export async function splitWiseToken() {
             Splitwise: sw,
             value: token,
             status: 'authorized'
-            status: 'authorized'
         };
     } catch (e) {
         return e;
