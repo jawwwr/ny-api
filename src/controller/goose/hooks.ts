@@ -40,6 +40,9 @@ export async function splitWiseToken() {
 
 export async function getConnectionsHooks(ctx) {
     const { splitwise } = ctx.state
+    console.log(ctx.state)
+    console.log(userOAuthToken)
+    console.log(splitwise)
 
     const sw = Splitwise({
         consumerKey: sw_key,
