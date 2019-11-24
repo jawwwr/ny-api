@@ -11,9 +11,10 @@ export default class RestaurantController {
     public static async getAll(ctx: BaseContext) {
         const result = await getRestaurants(ctx.query);
         const num_people = ctx.query.number_of_person || 2;
-        let filtered_result = result;
 
-        if(ctx.query.budget) { 
+        let filtered_result = [];
+        console.log(result)
+        if(ctx.query.budget && (result && result.restaurants.length !== 0)) { 
             const budget_per_person = parseFloat(ctx.query.budget)/parseFloat(num_people);
             filtered_result = result.restaurants.map(resto => {
                 if (resto.restaurant.average_cost_for_two <= (budget_per_person * 2)) return resto;
