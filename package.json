@@ -73,7 +73,7 @@
     "socket.io": "^2.3.0",
     "splitwise": "^1.0.0",
     "splitwise-node": "^0.3.3",
-    "typeorm": "^0.2.18",
+    "typeorm": "^0.2.25",
     "winston": "^3.2.1"
   }
 }
